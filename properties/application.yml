@@ -1,0 +1,23 @@
+server:
+  port: 8443
+  ssl:
+    protocol: TLSv1.3
+    enabled: true
+    key-store: /etc/ssl/local-ssl.p12
+    key-store-password: qwerty
+    key-password: qwerty
+    key-store-type: PKCS12
+    key-alias: local_ssl
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+
+
+spring:
+  jpa:
+    hibernate:
+      ddl-auto:
+        create

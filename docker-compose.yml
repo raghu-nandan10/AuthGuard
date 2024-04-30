@@ -1,0 +1,44 @@
+version: '3.1'
+
+services:
+  db:
+    image: postgres
+    ports:
+      - "5430:5432"
+    environment:
+      POSTGRES_USERNAME: postgres
+      POSTGRES_PASSWORD: qwerty
+      POSTGRES_DB: postgres
+
+
+  jsonwebtokenproject:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: jsonwebtokenproject-image
+
+    ports:
+      - "8443:8443"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/postgres
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: qwerty
+    volumes:
+      - /Users/grootan/Downloads/jsonwebtokenproject/properties:/properties
+      - ./ssl/:/etc/ssl/
+    depends_on:
+      - db
+  nginx:
+    image: nginx:latest
+    ports:
+      - "443:443"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/conf.d/default.conf:ro
+      - ./ssl/:/etc/ssl/
+    depends_on:
+      - jsonwebtokenproject
+
+
+
+
+
